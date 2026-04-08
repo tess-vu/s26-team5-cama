@@ -130,12 +130,12 @@ strong, b {
   top: 12px;
   right: 12px;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgb(255 255 255 / 95%);
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px 14px;
   font-size: 0.82rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
 }
 
 .map-controls fieldset {
@@ -172,7 +172,7 @@ strong, b {
   padding: 12px 16px;
   min-width: 200px;
   font-size: 0.85rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 20%);
 }
 
 .popup-address {
@@ -216,7 +216,7 @@ strong, b {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
 }
