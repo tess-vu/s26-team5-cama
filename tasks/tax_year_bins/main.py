@@ -11,7 +11,6 @@ Usage:
 
 import functions_framework
 import pathlib
-import os
 from google.cloud import bigquery
 from dotenv import load_dotenv
 
