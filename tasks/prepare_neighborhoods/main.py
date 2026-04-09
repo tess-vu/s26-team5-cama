@@ -40,11 +40,11 @@ def prepare_neighborhoods(request):
         )
         parquet_data = raw_blob.download_as_bytes()
 
-        # Load with pyarrow and convert all decimal128 columns to float64
+        # Load with pyarrow and convert all decimal128 columns to float64.
         print("Converting all DECIMAL columns to FLOAT64.")
         parquet_file = pq.read_table(io.BytesIO(parquet_data))
         
-        # Create new schema with decimal128 converted to float64
+        # Create new schema with decimal128 converted to float64.
         schema = parquet_file.schema
         new_fields = []
         for field in schema:
@@ -56,7 +56,7 @@ def prepare_neighborhoods(request):
         
         new_schema = pa.schema(new_fields)
         
-        # Cast to new schema and convert to pandas/back for safety
+        # Cast Arrow table directly.
         converted_table = parquet_file.cast(new_schema)
 
         # Write to prepared data bucket.
