@@ -16,6 +16,7 @@
 
 html, body {
   height: 100%;
+  
   /* Open Sans matches phila.gov typographic standard. System fonts as fallback. */
   font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
