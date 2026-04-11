@@ -210,7 +210,7 @@ strong, b {
 
 /* Tablet / Large Phone (≤ 768px)
    Reduce outer margin and padding. Table already scrolls horizontally. */
-@media (max-width <= 768px) {
+@media (width <= 768px) {
   .widget-container {
     margin: 16px 12px; /* Reduce margins so widget uses more screen width. */
   }
@@ -241,7 +241,7 @@ strong, b {
 
 /* Small Phone (≤ 480px)
    Edge-to-edge layout. Larger touch targets. Reduced font sizes. */
-@media (max-width <= 480px) {
+@media (width <= 480px) {
   .widget-container {
     margin: 0; /* Full-bleed on small phones. */
     border-left: none;

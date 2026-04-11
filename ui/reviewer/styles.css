@@ -261,7 +261,7 @@ strong, b {
 /* Tablet / Small Laptop (≤ 768px)
    Stack sidebar above map instead of side-by-side.
    Sidebar becomes scrollable top panel capped at 40 vh. */
-@media (max-width <= 768px) {
+@media (width <= 768px) {
   .layout {
     flex-direction: column; /* Sidebar on top, map below. */
   }
@@ -302,7 +302,7 @@ strong, b {
 
 /* Small Phone (≤ 480px)
    Tighten spacing. Reduce chart heights. */
-@media (max-width <= 480px) {
+@media (width <= 480px) {
   .sidebar {
     padding: 12px 14px;
     max-height: 35vh; /* Slightly less room for sidebar on small screens. */
