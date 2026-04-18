@@ -194,6 +194,17 @@ main:
                           type: OIDC
                         timeout: 1800
                       result: create_tax_year_assessment_bins_result
+                    
+            - generate_tax_year_chart_config:
+                steps:
+                  - run_generate_tax_year_chart_config:
+                      call: http.post
+                      args:
+                        url: ${base_url + "/generate-tax-year-chart-config"}
+                        auth:
+                          type: OIDC
+                        timeout: 1800
+                      result: generate_tax_year_chart_config_result
 
     - return_success:
         return:
