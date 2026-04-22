@@ -18,8 +18,12 @@ ogr2ogr \
   ./properties \
   ./property_tile_info.geojson
 
+  gcloud storage rm \
+  gs://musa5090s26-team5-public/tiles/properties
+
 # Upload the vector tileset to the public bucket.
 gcloud storage cp \
   --recursive \
   ./properties \
   gs://musa5090s26-team5-public/tiles
+
