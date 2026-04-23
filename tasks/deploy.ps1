@@ -274,6 +274,15 @@ gcloud functions deploy export-property-tile-info `
     --memory=4GB `
     --no-allow-unauthenticated
 
+# Generate tiles for the property tile info.
+Write-Host "Deploying generate-property-map-tiles."
+gcloud builds submit tasks/generate_property_map_tiles `  
+--tag=$REGION-docker.pkg.dev/$PROJECT_ID/cama/generate-property-map-tiles 
+
+gcloud run jobs deploy generate-property-map-tiles `  
+--image=$REGION-docker.pkg.dev/$PROJECT_ID/cama/generate-property-map-tiles `  
+--region=$REGION
+    
 
 # Deploy the data pipeline workflow.
 Write-Host "Deploying data-pipeline workflow."
