@@ -63,4 +63,3 @@ def generate_tax_year_chart_config(request):
     except Exception as e:
         print(f"Error generating tax year chart config: {e}")
         return (f"Error generating tax year chart config: {e}", 500)
-        
