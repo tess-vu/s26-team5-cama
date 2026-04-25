@@ -43,7 +43,7 @@ def export_map_styling(request):
         for row in results:
             styling_metadata = {
                 "sale_price": {
-                    "min": row.min,    
+                    "min": row.min,
                     "max": row.max,
                     "breakpoints": list(row.breakpoints)
                 },
