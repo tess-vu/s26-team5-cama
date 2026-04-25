@@ -12,9 +12,6 @@ import json
 from google.cloud import bigquery
 from google.cloud import storage
 
-
-
-
 SQL_QUERY = """
     SELECT
         lower_bound,
@@ -25,6 +22,7 @@ SQL_QUERY = """
     WHERE tax_year = (SELECT MAX(tax_year) FROM `derived.tax_year_assessment_bins`)
     ORDER BY lower_bound
 """
+
 
 @functions_framework.http
 def generate_tax_year_chart_config(request):
@@ -65,3 +63,4 @@ def generate_tax_year_chart_config(request):
     except Exception as e:
         print(f"Error generating tax year chart config: {e}")
         return (f"Error generating tax year chart config: {e}", 500)
+        
