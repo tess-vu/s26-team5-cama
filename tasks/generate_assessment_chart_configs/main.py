@@ -5,7 +5,7 @@ This function queries derived.current_assessment_bins for the most recent tax ye
 and exports the results as a JSON file to the public Cloud Storage bucket.
 
 Usage:
-    Deploy as a Cloud Function named "generate-tax-assessment-chart-configs"
+    Deploy as a Cloud Function named "generate-assessment-chart-config"
 """
 import functions_framework
 import json
@@ -18,9 +18,7 @@ SQL_QUERY = """
         lower_bound,
         upper_bound,
         property_count,
-        tax_year
     FROM `derived.current_assessment_bins`
-    WHERE tax_year = (SELECT MAX(tax_year) FROM `derived.current_assessment_bins`)
     ORDER BY lower_bound
 """
 
@@ -28,7 +26,7 @@ SQL_QUERY = """
 @functions_framework.http
 def generate_assessment_chart_configs(request):
     try:
-        public_bucket = os.getenv("PUBLIC_BUCKET", "musa5090s26-team5")
+        public_bucket = os.getenv("PUBLIC_BUCKET", "musa5090s26-team5-public")
 
         # Initialize BigQuery client and run query.
         bq_client = bigquery.Client()
@@ -41,8 +39,7 @@ def generate_assessment_chart_configs(request):
             {
                 "lower_bound": row.lower_bound,
                 "upper_bound": row.upper_bound,
-                "property_count": row.property_count,
-                "tax_year": row.tax_year,
+                "property_count": row.property_count
             }
             for row in results
         ]
@@ -56,7 +53,7 @@ def generate_assessment_chart_configs(request):
             json.dumps(chart_config),
             content_type="application/json",
         )
-        blob.make_public()
+        
         print(f"Uploaded to gs://{public_bucket}/configs/current_assessment_bins.json")
 
         return ("Assessment chart config generated and uploaded successfully.", 200)

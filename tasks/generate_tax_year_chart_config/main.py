@@ -11,6 +11,7 @@ import functions_framework
 import json
 from google.cloud import bigquery
 from google.cloud import storage
+import os
 
 SQL_QUERY = """
     SELECT
@@ -27,7 +28,7 @@ SQL_QUERY = """
 @functions_framework.http
 def generate_tax_year_chart_config(request):
     try:
-        public_bucket = os.getenv("PUBLIC_BUCKET", "musa5090s26-team5")
+        public_bucket = os.getenv("PUBLIC_BUCKET", "musa5090s26-team5-public")
 
         # Initialize BigQuery client and run query.
         bq_client = bigquery.Client()
@@ -55,7 +56,6 @@ def generate_tax_year_chart_config(request):
             json.dumps(chart_config),
             content_type="application/json",
         )
-        blob.make_public()
         print(f"Uploaded to gs://{public_bucket}/configs/tax_year_assessment_bins.json")
 
         return ("Tax year chart config generated and uploaded successfully.", 200)
