@@ -1,7 +1,7 @@
 """
 HTTP Cloud Function to export map styling metadata to Cloud Storage.
 
-This function is meant to query derived.current_assessments_model_training_data 
+This function is meant to query derived.current_assessments_model_training_data
 and export the relevant map styling metadata to the public GCS bucket.
 
 Usage:
@@ -16,7 +16,7 @@ import os
 
 # year_built is commented out for now, in case we want to add it later.
 SQL_QUERY = """
-    SELECT 
+    SELECT
         MIN(sale_price) AS min,
         MAX(sale_price) AS max,
         APPROX_QUANTILES(sale_price, 4) AS breakpoints,
@@ -25,6 +25,7 @@ SQL_QUERY = """
         APPROX_QUANTILES(year_built, 4) AS year_built_breakpoints
     FROM `derived.current_assessments_model_training_data`
 """
+
 
 @functions_framework.http
 def export_map_styling(request):
@@ -37,8 +38,7 @@ def export_map_styling(request):
         results = job.result()
         print("Executed SQL query to get map styling metadata.")
 
-        # Process results into a dictionary.   
-
+        # Process results into a dictionary.
         styling_metadata = {}
         for row in results:
             styling_metadata = {
@@ -55,7 +55,7 @@ def export_map_styling(request):
             }
             print(f"Processed row: { styling_metadata}")
 
-        #Upload to public GCS bucket
+        # Upload to public GCS bucket.
         storage_client = storage.Client()
         bucket = storage_client.bucket(public_bucket)
         blob = bucket.blob("configs/map_styling_metadata.json")
@@ -68,8 +68,7 @@ def export_map_styling(request):
         print(f"Uploaded to gs://{public_bucket}/configs/map_styling_metadata.json")
 
         return ("Successfully exported map styling metadata.", 200)
-    
+
     except Exception as e:
         print(f"Error exporting map styling metadata: {e}.")
         return (f"Error: {e}.", 500)
-
