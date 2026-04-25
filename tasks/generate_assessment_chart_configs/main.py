@@ -53,7 +53,7 @@ def generate_assessment_chart_configs(request):
             json.dumps(chart_config),
             content_type="application/json",
         )
-        
+
         print(f"Uploaded to gs://{public_bucket}/configs/current_assessment_bins.json")
 
         return ("Assessment chart config generated and uploaded successfully.", 200)
