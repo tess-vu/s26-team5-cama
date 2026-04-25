@@ -16,21 +16,31 @@ import os
 
 # year_built is commented out for now, in case we want to add it later.
 SQL_QUERY = """
-    SELECT
-        MIN(sale_price) AS min,
-        MAX(sale_price) AS max,
-        APPROX_QUANTILES(sale_price, 4) AS breakpoints,
-        MIN(year_built) AS year_built_min,
-        MAX(year_built) AS year_built_max,
-        APPROX_QUANTILES(year_built, 4) AS year_built_breakpoints
-    FROM `derived.current_assessments_model_training_data`
+    WITH predicted AS (
+        SELECT
+            MIN(predicted_value) AS min,
+            MAX(predicted_value) AS max,
+            APPROX_QUANTILES(predicted_value, 4) AS breakpoints)
+        FROM `derived.current_assessments`
+        WHERE predicted_value IS NOT NULL AND predicted_value >0
+    ),
+    tax_year AS (
+        SELECT
+            MIN(market_value) AS min,
+            MAX(market_value) AS max,
+            APPROX_QUANTILES(market_value, 4) AS breakpoints
+        FROM `core.opa_assessments`
+        WHERE market_value IS NOT NULL AND market_value >0
+            AND year = (SELECT MAX(year) FROM `core.opa_assessments`)
+    )
+    SELECT * FROM predicted, tax_year
 """
 
 
 @functions_framework.http
 def export_map_styling(request):
     try:
-        public_bucket = os.getenv("PUBLIC_BUCKET", "musa5090s26-team5")
+        public_bucket = os.getenv("PUBLIC_BUCKET", "musa5090s26-team5-public")
 
         # Initialize BQ client and execute
         bq_client = bigquery.Client()
@@ -64,7 +74,6 @@ def export_map_styling(request):
             content_type="application/json"
         )
 
-        blob.make_public()
         print(f"Uploaded to gs://{public_bucket}/configs/map_styling_metadata.json")
 
         return ("Successfully exported map styling metadata.", 200)
