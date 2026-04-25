@@ -260,20 +260,29 @@ gcloud functions deploy create-tax-year-assessment-bins `
     --no-allow-unauthenticated
 
 # Assessment Chart Config.
-Write-Host "Deploying generate-assessment-chart-configs."
-gcloud functions deploy generate-assessment-chart-configs `
+Write-Host "Deploying generate-assessment-chart-config."
+gcloud functions deploy generate-assessment-chart-config `
     --gen2 `
     --runtime=python311 `
     --region=$REGION `
-    --source=tasks/generate_assessment_chart_configs `
+    --source=tasks/generate_assessment_chart_config `
     --entry-point=generate_assessment_chart_config `
+
+# Current Assessment Bins (Issue #8).
+Write-Host "Deploying create-current-assessment-bins."
+gcloud functions deploy create-current-assessment-bins `
+    --gen2 `
+    --runtime=python311 `
+    --region=$REGION `
+    --source=tasks/current_assessment_bins `
+    --entry-point=create_current_assessment_bins `
     --trigger-http `
     --timeout=1800s `
     --memory=512MB `
     --no-allow-unauthenticated
 
 # Tax Year Chart Config.
-Write-Host " Deploying generate-tax-year-chart-config."
+Write-Host "Deploying generate-tax-year-chart-config."
 gcloud functions deploy generate-tax-year-chart-config `
     --gen2 `
     --runtime=python311 `
@@ -285,8 +294,30 @@ gcloud functions deploy generate-tax-year-chart-config `
     --memory=512MB `
     --no-allow-unauthenticated
 
-
 Write-Host "Workflow" -ForegroundColor Green
+
+# Extract Property Tile Info.
+Write-Host "Deploying export-property-tile-info"
+gcloud functions deploy export-property-tile-info `
+    --gen2 `
+    --runtime=python311 `
+    --region=$REGION `
+    --source=tasks/export_property_tile_info `
+    --entry-point=export_property_tile_info `
+    --trigger-http `
+    --timeout=1800s `
+    --memory=4GB `
+    --no-allow-unauthenticated
+
+# Generate tiles for the property tile info.
+Write-Host "Deploying generate-property-map-tiles."
+gcloud builds submit tasks/generate_property_map_tiles `  
+--tag=$REGION-docker.pkg.dev/$PROJECT_ID/cama/generate-property-map-tiles 
+
+gcloud run jobs deploy generate-property-map-tiles `  
+--image=$REGION-docker.pkg.dev/$PROJECT_ID/cama/generate-property-map-tiles `  
+--region=$REGION
+    
 
 # Deploy the data pipeline workflow.
 Write-Host "Deploying data-pipeline workflow."
