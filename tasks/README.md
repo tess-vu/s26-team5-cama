@@ -87,6 +87,10 @@ tasks/
 |   ├── requirements.txt
 |   └── property_tile_info.sql
 |
+├── generate_map_styling_metadata/   # Create a task to export a GeoJSON file map styling metadata. 
+|   ├── main.py 
+|   └── requirements.txt
+|
 ├── workflows/
 │   └── data_pipeline.yaml      # Orchestration workflow.
 ├── deploy.ps1                  # PowerShell deployment script.
@@ -330,6 +334,7 @@ gcloud functions deploy generate-tax-year-chart-config `
     --timeout=1800s `
     --memory=512MB `
     --no-allow-unauthenticated
+
 gcloud functions deploy export-property-tile-info `
     --gen2 `
     --runtime=python311 `
@@ -339,6 +344,17 @@ gcloud functions deploy export-property-tile-info `
     --trigger-http `
     --timeout=1800s `
     --memory=4GB `
+    --no-allow-unauthenticated
+
+gcloud functions deploy generate-map-styling-metadata `
+    --gen2 `
+    --runtime=python311 `
+    --region=$REGION `
+    --source=tasks/generate-map-styling-metadata `
+    --entry-point=generate-map-styling-metadata `
+    --trigger-http `
+    --timeout=1800s `
+    --memory=512MB `
     --no-allow-unauthenticated
 
 ```

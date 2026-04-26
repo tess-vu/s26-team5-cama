@@ -317,6 +317,19 @@ gcloud builds submit tasks/generate_property_map_tiles `
 gcloud run jobs deploy generate-property-map-tiles `  
 --image=$REGION-docker.pkg.dev/$PROJECT_ID/cama/generate-property-map-tiles `  
 --region=$REGION
+
+# Export map styling metadata.
+Write-Host "Deploying generate-map-styling-metadata"
+gcloud functions deploy generate-map-styling-metadata `
+    --gen2 `
+    --runtime=python311 `
+    --region=$REGION `
+    --source=tasks/generate_map_styling_metadata `
+    --entry-point=generate_map_styling_metadata `
+    --trigger-http `
+    --timeout=1800s `
+    --memory=512MB `
+    --no-allow-unauthenticated
     
 
 # Deploy the data pipeline workflow.

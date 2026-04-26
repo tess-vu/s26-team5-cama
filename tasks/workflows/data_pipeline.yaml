@@ -184,6 +184,17 @@ main:
                         timeout: 1800
                       result: create_training_data_result
 
+            - generate_map_styling_metadata:
+                steps:
+                  - run_generate_map_stlying_metadata:
+                      call: http.post
+                      args:
+                        url: ${base_url + "/generate-map-styling-metadata"}
+                        auth:
+                          type: OIDC
+                        timeout: 1800
+                      result: generate_map_styling_metadata_result
+
             - create_tax_year_assessment_bins:
                 steps:
                   - run_create_tax_year_assessment_bins:
@@ -239,6 +250,7 @@ main:
                         timeout: 1800
                       result: create_current_assessment_bins_result
 
+       
     - generate_property_map_tiles:
         steps:
           - run_generate_property_map_tiles:
