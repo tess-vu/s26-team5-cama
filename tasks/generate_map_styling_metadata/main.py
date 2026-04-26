@@ -57,13 +57,12 @@ def export_map_styling(request):
                     "max": row.predicted_max,
                     "breakpoints": list(row.predicted_breakpoints)
                 },
-                "market_value" : {
+                "market_value": {
                     "min": row.tax_year_min,
                     "max": row.tax_year_max,
                     "breakpoints": list(row.tax_year_breakpoints)
                 }
-            }
-                
+            } 
             print(f"Processed row: { styling_metadata}")
 
         # Upload to public GCS bucket.
