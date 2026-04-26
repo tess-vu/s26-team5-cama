@@ -62,7 +62,7 @@ def export_map_styling(request):
                     "max": row.tax_year_max,
                     "breakpoints": list(row.tax_year_breakpoints)
                 }
-            } 
+            }
             print(f"Processed row: { styling_metadata}")
 
         # Upload to public GCS bucket.
